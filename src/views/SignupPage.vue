@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <h1>회원 가입 페이지</h1>
-    <SignupForm />
+  <div class="main form-container">
+    <SignupForm></SignupForm>
   </div>
 </template>
 

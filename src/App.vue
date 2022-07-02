@@ -16,4 +16,7 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@import './assets/css/reset.css';
+@import './assets/css/common.css';
+</style>

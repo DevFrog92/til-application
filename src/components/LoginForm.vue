@@ -1,31 +1,35 @@
 <template>
-  <form @submit.prevent="submitForm">
-    <div>
-      <label for="username">id:</label>
-      <input type="text" id="username" v-model="username" />
+  <div class="contents">
+    <div class="form-wrapper form-wrapper-sm">
+      <PageHeader>Login</PageHeader>
+      <form @submit.prevent="submitForm" class="form">
+        <div>
+          <label for="username">ID</label>
+          <input type="text" id="username" v-model="username" />
+        </div>
+        <div>
+          <label for="password">PW</label>
+          <input type="password" id="password" v-model="password" />
+        </div>
+        <button class="btn">login</button>
+      </form>
     </div>
-    <div>
-      <label for="password">pw:</label>
-      <input type="text" id="password" v-model="password" />
-    </div>
-    <button :disabled="!isUserNameValid || !password" type="submit">
-      로그인
-    </button>
-    <p>{{ logMessage }}</p>
-  </form>
+  </div>
 </template>
 
 <script>
 import { loginUser } from '@/api/index';
 import { validateEmail } from '@/utils/validation';
+import PageHeader from '@/components/common/PageHeader.vue';
 
 export default {
+  components: {
+    PageHeader,
+  },
   data() {
     return {
       username: '',
       password: '',
-      //log
-      logMessage: '',
     };
   },
   computed: {
@@ -44,8 +48,9 @@ export default {
 
         const { data } = await loginUser(userData);
 
-        console.log(data.user.username);
-        this.logMessage = `${data.user.username} 님 환영합니다.`;
+        this.$store.commit('setToken', data.token);
+        this.$store.commit('setUsername', data.user.username);
+        this.$router.push('/main');
       } catch (error) {
         this.logMessage = error.response.data;
       } finally {
