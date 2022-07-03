@@ -11,6 +11,7 @@
         />
       </ul>
     </div>
+    <router-link to="/add" class="create-button"> + </router-link>
   </div>
 </template>
 
@@ -32,10 +33,14 @@ export default {
   },
   methods: {
     async fetchNotes() {
-      this.isLoading = true;
-      const { data } = await fetchPosts();
-      this.postItems = data.posts;
-      this.isLoading = false;
+      try {
+        this.isLoading = true;
+        const { data } = await fetchPosts();
+        this.postItems = data.posts;
+        this.isLoading = false;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   created() {

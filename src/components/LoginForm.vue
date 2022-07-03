@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import { loginUser } from '@/api/index';
 import { validateEmail } from '@/utils/validation';
 import PageHeader from '@/components/common/PageHeader.vue';
 
@@ -46,10 +45,7 @@ export default {
           password: this.password,
         };
 
-        const { data } = await loginUser(userData);
-
-        this.$store.commit('setToken', data.token);
-        this.$store.commit('setUsername', data.user.username);
+        await this.$store.dispatch('LOGIN', userData);
         this.$router.push('/main');
       } catch (error) {
         this.logMessage = error.response.data;
