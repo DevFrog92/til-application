@@ -1,3 +1,4 @@
+import store from '@/store';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
@@ -20,10 +21,23 @@ const routes = [
   {
     path: '/main',
     component: () => import('@/views/MainPage.vue'),
+    meta: {
+      requiredAuth: true,
+    },
   },
   {
     path: '/add',
     component: () => import('@/views/PostAddPage.vue'),
+    meta: {
+      requiredAuth: true,
+    },
+  },
+  {
+    path: '/post/:id',
+    component: () => import('@/views/PostEditPage.vue'),
+    meta: {
+      requiredAuth: true,
+    },
   },
   {
     // callback router
@@ -36,6 +50,15 @@ const router = new VueRouter({
   // #: 서버는 index.html을 기준으로 찾기 때문에 뒤에 오는게 상관이 없다.
   mode: 'history',
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiredAuth && !store.getters.isLogin) {
+    next('/login');
+    console.log('인증이 필요하다.');
+    return;
+  }
+  next();
 });
 
 export default router;
